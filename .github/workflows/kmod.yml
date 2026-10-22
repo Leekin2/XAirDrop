@@ -1,0 +1,30 @@
+name: kmod
+on:
+  workflow_dispatch:
+  push:
+    paths: ['kmod/**', '.github/workflows/kmod.yml']
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tools
+        run: sudo apt-get update && sudo apt-get install -y clang lld llvm bc bison flex libelf-dev libssl-dev
+      - name: Kernel source (ACK android15-6.6)
+        run: git clone --depth 1 -b android15-6.6 https://android.googlesource.com/kernel/common ack
+      - name: modules_prepare
+        working-directory: ack
+        run: |
+          make ARCH=arm64 LLVM=1 gki_defconfig
+          make ARCH=arm64 LLVM=1 -j"$(nproc)" modules_prepare
+          cp "$GITHUB_WORKSPACE/kmod/xuanyuan.symvers" Module.symvers
+      - name: Build wonder_sysctl.ko
+        working-directory: ack
+        run: |
+          make ARCH=arm64 LLVM=1 M="$GITHUB_WORKSPACE/kmod/wonder_sysctl" modules
+          llvm-strip --strip-debug "$GITHUB_WORKSPACE/kmod/wonder_sysctl/wonder_sysctl.ko"
+          modinfo "$GITHUB_WORKSPACE/kmod/wonder_sysctl/wonder_sysctl.ko" || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wonder_sysctl
+          path: kmod/wonder_sysctl/wonder_sysctl.ko

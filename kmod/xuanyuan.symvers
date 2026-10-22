@@ -1,0 +1,7 @@
+0x4e276f37	module_layout	vmlinux	EXPORT_SYMBOL	
+0x92997ed8	_printk	vmlinux	EXPORT_SYMBOL	
+0xc9119916	init_net	vmlinux	EXPORT_SYMBOL	
+0x2801a22f	proc_dointvec_minmax	vmlinux	EXPORT_SYMBOL	
+0xc8827b75	sysctl_vals	vmlinux	EXPORT_SYMBOL	
+0x654768ff	register_net_sysctl_sz	vmlinux	EXPORT_SYMBOL_GPL	
+0xb805d2b3	unregister_net_sysctl_table	vmlinux	EXPORT_SYMBOL_GPL	
