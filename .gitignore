@@ -1,0 +1,9 @@
+# LSPosed experiment, not part of XAirDrop (no hook framework is used)
+hook/
+# Binaries: shipped in the release zip only
+module/kernel/
+module/payload/
+module/xos/
+xosclient/out/
+patches/__pycache__/
+*.zip

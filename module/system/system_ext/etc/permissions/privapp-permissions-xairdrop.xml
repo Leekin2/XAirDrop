@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- XAirDrop: Xiaomi Share registers the AirDrop interface (xos0) as a network, which needs
+     NETWORK_FACTORY. The Xiaomi 15 ROMs do not grant it to the 18 Pro Max Xiaomi Share.
+     Read at boot; the action log shows whether the permission is now granted. -->
+<permissions>
+    <privapp-permissions package="com.miui.mishare.connectivity">
+        <permission name="android.permission.NETWORK_FACTORY"/>
+    </privapp-permissions>
+</permissions>

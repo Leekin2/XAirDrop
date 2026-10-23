@@ -1,0 +1,10 @@
+<!--
+    Input:
+        vendor/xiaomi/proprietary/DomesticXOsComm/manifest_com.domestic.xoscomm.xml
+-->
+<manifest version="9.0" type="device">
+    <hal format="aidl">
+        <name>com.domestic.xoscomm</name>
+        <fqname>IDomesticXOsComm/default</fqname>
+    </hal>
+</manifest>

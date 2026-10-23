@@ -1,0 +1,6 @@
+id=xairdrop
+name=XAirDrop
+version=0.27
+versionCode=27
+author=Leekin2
+description=AirDrop with iPhone through Xiaomi Share on Xiaomi 15 / 15 Ultra. Press the action button after each boot: loads the AirDrop Wi-Fi stack, patches Xiaomi Share and the share sheet until reboot. Wi-Fi pauses while the Apple share screen is open. Needs Xiaomi Share 5.4.2 (Xiaomi 18 Pro Max).

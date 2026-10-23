@@ -1,0 +1,39 @@
+allow ksu default_android_service service_manager { add find }
+allow servicemanager ksu binder { call transfer }
+allow ksu servicemanager binder { call transfer }
+allow servicemanager ksu dir search
+allow servicemanager ksu file { read open }
+allow servicemanager ksu process getattr
+allow platform_app default_android_service service_manager find
+allow platform_app ksu binder { call transfer }
+allow ksu platform_app binder { call transfer }
+allow platform_app ksu fd use
+allow platform_app proc_net file { read open getattr }
+allow platform_app proc_net dir search
+allow platform_app_36 default_android_service service_manager find
+allow platform_app_36 ksu binder { call transfer }
+allow ksu platform_app_36 binder { call transfer }
+allow platform_app_36 ksu fd use
+allow platform_app_36 proc_net file { read open getattr }
+allow platform_app_36 proc_net dir search
+allow priv_app default_android_service service_manager find
+allow priv_app ksu binder { call transfer }
+allow ksu priv_app binder { call transfer }
+allow priv_app ksu fd use
+allow priv_app proc_net file { read open getattr }
+allow priv_app proc_net dir search
+allow system_app default_android_service service_manager find
+allow system_app ksu binder { call transfer }
+allow ksu system_app binder { call transfer }
+allow system_app ksu fd use
+allow system_app proc_net file { read open getattr }
+allow system_app proc_net dir search
+# XAirDrop network broker (root) <-> Xiaomi Share: local socket, and the broker's
+# NetworkAgent talks to system_server.
+allow platform_app ksu unix_stream_socket { connectto read write getattr getopt setopt shutdown }
+allow platform_app_36 ksu unix_stream_socket { connectto read write getattr getopt setopt shutdown }
+allow priv_app ksu unix_stream_socket { connectto read write getattr getopt setopt shutdown }
+allow system_app ksu unix_stream_socket { connectto read write getattr getopt setopt shutdown }
+allow ksu system_server binder { call transfer }
+allow system_server ksu binder { call transfer }
+allow system_server ksu fd use
