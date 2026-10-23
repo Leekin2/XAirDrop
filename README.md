@@ -47,7 +47,8 @@ Tested:
   connected
 - Xiaomi 15 Ultra, OS4.0.0.18.XOACNXM (China ROM): radio, service, patches and Wi-Fi pause
   work; not yet tested with an iPhone nearby
-- Receiving from an iPhone has not been confirmed yet.
+- **Receiving from an iPhone does not work yet**: the iPhone does not list the Xiaomi phone.
+  Until it is fixed, send from the iPhone with Xiaomi's *Xiaomi Interconnectivity* iOS app.
 
 If an earlier test build (`xairdrop_test`) is installed, XAirDrop removes it at the next reboot.
 
@@ -63,8 +64,7 @@ If an earlier test build (`xairdrop_test`) is installed, XAirDrop removes it at 
 ## Use
 - **Send:** Gallery → Share → **Transfer to and from Apple devices**. Keep the screen open until
   the iPhone shows up (iPhone: AirDrop → *Everyone for 10 Minutes*, unlocked, nearby).
-- **Receive:** open **Receive files from Apple devices** on the same screen and keep it open;
-  send from the iPhone with AirDrop.
+- **Receive:** not working yet (see Known limits).
 - Wi-Fi disconnects while the Apple screen is open and comes back when you leave it. Internet
   goes over mobile data in the meantime.
 
@@ -73,7 +73,8 @@ If an earlier test build (`xairdrop_test`) is installed, XAirDrop removes it at 
   once as root `touch /data/adb/xairdrop/no-autostart`.
 - If the phone restarts while AirDrop is starting, the next boot skips the automatic start; press
   the action button.
-- The phone is visible to iPhones only while the receive page is open, like on the 18 Pro Max.
+- Receiving with AirDrop from an iPhone does not work yet; use the Xiaomi Interconnectivity
+  iOS app on the iPhone for now.
 - Wi-Fi Internet pauses during AirDrop.
 - The share-sheet fix only applies to the Xiaomi 15 Ultra OS4.0.0.18 share sheet; on other
   builds share from another app, or use the `persist.sys.sharesheet.region 2` setting.
@@ -89,7 +90,7 @@ it paused is turned back on.
 
 ## Support
 - Telegram: [@emcleek](https://t.me/emcleek)
-- XApp channel: [t.me/Xgooogle](https://t.me/Xgooogle)
+- XApps for HyperOS: [t.me/Xgooogle](https://t.me/Xgooogle)
 - HyperVoltron channel: [t.me/HyperVoltron](https://t.me/HyperVoltron)
 
 ## Credits
@@ -153,7 +154,8 @@ başlatınca stok sürücü ve uygulamalar geri gelir.
 - Bluetooth açık; Wi-Fi açık (bir ağa bağlı olabilir)
 
 Test edildi: Xiaomi 15 (iPhone'a gönderim, Wi-Fi bağlıyken de); Xiaomi 15 Ultra (iPhone olmadan:
-radyo, servis, yamalar, Wi-Fi duraklatma). iPhone'dan alma henüz doğrulanmadı.
+radyo, servis, yamalar, Wi-Fi duraklatma). **iPhone'dan alma henüz çalışmıyor:** iPhone, Xiaomi'yi
+listede göstermiyor. Düzelene kadar iPhone'dan Xiaomi'nin *Xiaomi Interconnectivity* uygulamasıyla gönderin.
 Eski test modülü (`xairdrop_test`) kuruluysa XAirDrop onu sonraki yeniden başlatmada kaldırır.
 
 ### Kurulum
@@ -167,22 +169,21 @@ Eski test modülü (`xairdrop_test`) kuruluysa XAirDrop onu sonraki yeniden baş
 ### Kullanım
 - **Gönderme:** Galeri → Paylaş → **Transfer to and from Apple devices**. iPhone çıkana kadar
   ekranı açık tut (iPhone: AirDrop → *Herkes (10 dakika)*, kilidi açık, yakında).
-- **Alma:** Aynı ekranda **Receive files from Apple devices**'ı açık tut; iPhone'dan AirDrop ile
-  gönder.
+- **Alma:** henüz çalışmıyor (Bilinen sınırlar'a bakın).
 - Apple ekranı açıkken Wi-Fi kopar, ekrandan çıkınca geri gelir; arada internet mobil veriden gider.
 
 ### Bilinen sınırlar
 - Açılıştan sonraki ilk dakika AirDrop hazır değildir. Yalnızca elle başlatmak için root ile bir kez:
   `touch /data/adb/xairdrop/no-autostart`
 - Telefon AirDrop başlatılırken yeniden başlarsa, sonraki açılışta otomatik başlatma atlanır; Action'a basın.
-- Telefon iPhone'lara yalnızca alma sayfası açıkken görünür (18 Pro Max'te de böyle).
+- iPhone'dan AirDrop ile alma henüz çalışmıyor; şimdilik iPhone'da Xiaomi Interconnectivity uygulamasını kullanın.
 - AirDrop sırasında Wi-Fi interneti durur.
 - Paylaşım menüsü düzeltmesi yalnızca Xiaomi 15 Ultra OS4.0.0.18 içindir; diğer sürümlerde başka
   bir uygulamadan paylaş ya da `persist.sys.sharesheet.region 2` ayarını kullan.
 
 ### Destek
 - Telegram: [@emcleek](https://t.me/emcleek)
-- XApp kanalı: [t.me/Xgooogle](https://t.me/Xgooogle)
+- XApps for HyperOS: [t.me/Xgooogle](https://t.me/Xgooogle)
 - HyperVoltron kanalı: [t.me/HyperVoltron](https://t.me/HyperVoltron)
 
 ### Sorun giderme
