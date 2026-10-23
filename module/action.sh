@@ -40,7 +40,7 @@ wlan_wait() { n=0; while [ ! -d /sys/class/net/wlan0 ] && [ $n -lt "$1" ]; do sl
 hal_services() { getprop | sed -n 's/^\[init\.svc\.\(vendor\.wifi_hal[^]]*\)\]: \[running\]$/\1/p'; }
 
 : > "$LOG"
-say "== XAirDrop v0.28 ($(date))"
+say "== XAirDrop 1.0 ($(date))"
 show "XAirDrop: starting AirDrop... / AirDrop başlatılıyor..."
 say "device=$(getprop ro.product.device) model=$(getprop ro.product.model) build=$(getprop ro.build.version.incremental)"
 say "kernel=$(uname -r)"
