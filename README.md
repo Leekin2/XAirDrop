@@ -78,7 +78,7 @@ it paused is turned back on.
 - [OPAirDrop](https://github.com/Weverses/OPAirDrop) by Weverses: the AWDL Wi-Fi driver and
   `wonder` modules for the OnePlus 13. The hardest part of all of this; XAirDrop would not exist
   without it.
-- **hypervoltron**: testing on the Xiaomi 15 and the two last fixes: the Bluetooth advertisement
+- [mertcqnkld](https://github.com/mertcqnkld): testing on the Xiaomi 15 and the two last fixes: the Bluetooth advertisement
   format and pausing Wi-Fi during AirDrop.
 - Xiaomi, for AirDrop in Xiaomi Share on the Xiaomi 18 Pro Max.
 
@@ -155,5 +155,5 @@ Yeniden başlatınca stok sürücü ve uygulamalar geri gelir.
 ### Teşekkürler
 - [OPAirDrop](https://github.com/Weverses/OPAirDrop) (Weverses): AWDL Wi-Fi sürücüsü ve `wonder`
   modülleri. İşin en zor kısmı; o olmasa XAirDrop olmazdı.
-- **hypervoltron**: Xiaomi 15'te testler ve son iki düzeltme: Bluetooth duyuru biçimi ve AirDrop
+- [mertcqnkld](https://github.com/mertcqnkld): Xiaomi 15'te testler ve son iki düzeltme: Bluetooth duyuru biçimi ve AirDrop
   sırasında Wi-Fi'nin duraklatılması.
