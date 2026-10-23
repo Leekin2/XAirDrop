@@ -3,6 +3,8 @@
 **AirDrop between iPhone and Xiaomi 15 / Xiaomi 15 Ultra, through Xiaomi Share.**
 A KernelSU module. No LSPosed.
 
+By [Leekin2](https://github.com/Leekin2) and [mertcqnkld](https://github.com/mertcqnkld).
+
 [Türkçe açıklama aşağıda](#türkçe)
 
 > ⚠️ **Only for the Xiaomi 15 (dada) and Xiaomi 15 Ultra (xuanyuan).** It replaces the Wi-Fi
@@ -77,6 +79,11 @@ pressing the action button.
 Remove the module in KernelSU and reboot. If an AirDrop session was still open, the Wi-Fi network
 it paused is turned back on.
 
+## Support
+- Telegram: [@emcleek](https://t.me/emcleek)
+- XApp channel: [t.me/Xgooogle](https://t.me/Xgooogle)
+- HyperVoltron channel: [t.me/HyperVoltron](https://t.me/HyperVoltron)
+
 ## Credits
 - [OPAirDrop](https://github.com/Weverses/OPAirDrop) by Weverses: the AWDL Wi-Fi driver and
   `wonder` modules for the OnePlus 13. The hardest part of all of this; XAirDrop would not exist
@@ -102,6 +109,8 @@ the release belong to Xiaomi.
 
 **iPhone ile Xiaomi 15 / Xiaomi 15 Ultra arasında AirDrop, Xiaomi Share üzerinden.**
 Bir KernelSU modülü. LSPosed gerekmez.
+
+Geliştiriciler: [Leekin2](https://github.com/Leekin2) ve [mertcqnkld](https://github.com/mertcqnkld).
 
 > ⚠️ **Yalnızca Xiaomi 15 (dada) ve Xiaomi 15 Ultra (xuanyuan) için.** Wi-Fi sürücüsünü bu
 > çekirdeğe göre hazırlanmış modüllerle değiştirir. Başka bir telefona kurmayın.
@@ -158,6 +167,11 @@ Eski test modülü (`xairdrop_test`) kuruluysa XAirDrop onu kaldırır; Action'd
 - AirDrop sırasında Wi-Fi interneti durur.
 - Paylaşım menüsü düzeltmesi yalnızca Xiaomi 15 Ultra OS4.0.0.18 içindir; diğer sürümlerde başka
   bir uygulamadan paylaş ya da `persist.sys.sharesheet.region 2` ayarını kullan.
+
+### Destek
+- Telegram: [@emcleek](https://t.me/emcleek)
+- XApp kanalı: [t.me/Xgooogle](https://t.me/Xgooogle)
+- HyperVoltron kanalı: [t.me/HyperVoltron](https://t.me/HyperVoltron)
 
 ### Teşekkürler
 - [OPAirDrop](https://github.com/Weverses/OPAirDrop) (Weverses): AWDL Wi-Fi sürücüsü ve `wonder`
