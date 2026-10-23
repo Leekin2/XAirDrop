@@ -41,11 +41,14 @@ and a reboot puts the stock driver and apps back.
 - Bluetooth on; Wi-Fi on (it may be connected to a network)
 
 Tested:
-- Xiaomi 15, OS4.0.0.61.XOCCNXM (EU-style ROM): iPhone found and files sent to it, also with
-  Wi-Fi connected
+- Xiaomi 15, OS4.0.0.61.XOCCNXM (EU-style ROM): iPhone found and files sent to it with Wi-Fi
+  connected
 - Xiaomi 15 Ultra, OS4.0.0.18.XOACNXM (China ROM): radio, service, patches and Wi-Fi pause
   work; not yet tested with an iPhone nearby
 - Receiving from an iPhone has not been confirmed yet.
+
+If an earlier test build (`xairdrop_test`) is installed, XAirDrop removes it; reboot before
+pressing the action button.
 
 ## Install
 1. Install `MIShare-5.4.2.apk` from the release.
@@ -130,6 +133,10 @@ Yeniden başlatınca stok sürücü ve uygulamalar geri gelir.
 - Xiaomi 18 Pro Max'in **Xiaomi Share (MIShare) 5.4.2** sürümü, yerleşik olanın üzerine kurulu
   (sürümde ekli). Yamalar yalnızca bu APK'ya uygulanır.
 - Bluetooth açık; Wi-Fi açık (bir ağa bağlı olabilir)
+
+Test edildi: Xiaomi 15 (iPhone'a gönderim, Wi-Fi bağlıyken de); Xiaomi 15 Ultra (iPhone olmadan:
+radyo, servis, yamalar, Wi-Fi duraklatma). iPhone'dan alma henüz doğrulanmadı.
+Eski test modülü (`xairdrop_test`) kuruluysa XAirDrop onu kaldırır; Action'dan önce yeniden başlatın.
 
 ### Kurulum
 1. Sürümdeki `MIShare-5.4.2.apk`'yı kur.
