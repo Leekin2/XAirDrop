@@ -19,13 +19,14 @@ fi
 PATCHES="com.miui.mishare.connectivity 394203fc35714c4c5d4b4e0b6d17ecaab239f5562a79bcf0a449ca36316cfa44 MIShare-xairdrop.apk
 com.android.intentresolver a60ad59f762f5181de8289f6d013e50f294088d980241205acb666e229904d97 MiIntentResolver-xairdrop.apk"
 
-ns_hash() { nsenter -t "$1" -m -- sha256sum "$2" 2>/dev/null | cut -d ' ' -f 1; }
+ns_hash() { nsenter -t "$1" -m -- sha256sum "$2" 2>/dev/null < /dev/null | cut -d ' ' -f 1; }
 
-echo "$PATCHES" | while read -r pkg orig file; do
+MS_OK=1
+while read -r pkg orig file; do
     payload="$MODDIR/payload/$file"
     want=$(sha256sum "$payload" | cut -d ' ' -f 1)
-    apk=$(/system/bin/pm path "$pkg" 2>/dev/null | sed -n 's/^package://p' | head -n 1)
-    if [ -z "$apk" ]; then say "patch $pkg: not installed, skipped"; continue; fi
+    apk=$(/system/bin/pm path "$pkg" 2>/dev/null < /dev/null | sed -n 's/^package://p' | head -n 1)
+    if [ -z "$apk" ]; then say "patch $pkg: not installed, skipped"; [ "$pkg" = com.miui.mishare.connectivity ] && MS_OK=0; continue; fi
     chmod 0644 "$payload"
     ok=1
     for nspid in 1 $(pidof zygote64 zygote); do
@@ -33,13 +34,16 @@ echo "$PATCHES" | while read -r pkg orig file; do
         if [ "$have" = "$want" ]; then continue; fi
         if [ "$have" != "$orig" ]; then
             say "patch $pkg: $apk is another version ($have), left as it is"
+            [ "$pkg" = com.miui.mishare.connectivity ] && MS_OK=0
             ok=0; break
         fi
-        nsenter -t "$nspid" -m -- sh "$MODDIR/apply-patches.sh" --mount "$apk" "$payload" >> "$LOG" 2>&1
+        nsenter -t "$nspid" -m -- sh "$MODDIR/apply-patches.sh" --mount "$apk" "$payload" >> "$LOG" 2>&1 < /dev/null
         [ "$(ns_hash "$nspid" "$apk")" = "$want" ] || { say "patch $pkg: mount failed in namespace of pid $nspid"; ok=0; break; }
     done
     if [ $ok = 1 ]; then
         say "patch $pkg: active ($apk)"
-        /system/bin/am force-stop "$pkg" > /dev/null 2>&1
+        /system/bin/am force-stop "$pkg" > /dev/null 2>&1 < /dev/null
     fi
-done
+done <<EOF
+$PATCHES
+EOF

@@ -1,16 +1,24 @@
 #!/system/bin/sh
-# XAirDrop step 1: swap in the AirDrop-capable Wi-Fi stack (OPAirDrop, OnePlus 13 / SM8750,
-# CRCs adapted to the Xiaomi 15 Ultra) in RAM only, check Wi-Fi, and log everything.
-# If the new driver does not bring Wi-Fi up, the stock driver is put back. A reboot always
-# restores the stock driver. Nothing here runs at boot.
+# XAirDrop action: swap in the AirDrop-capable Wi-Fi stack (OPAirDrop, OnePlus 13 / SM8750,
+# CRCs adapted to the Xiaomi 15 family) in RAM only, then start Xiaomi's AirDrop service and
+# patch Xiaomi Share (step2.sh). If the new driver does not bring Wi-Fi up, the stock driver is
+# put back. A reboot always restores the stock driver. Nothing here runs at boot.
+# The screen gets a few plain lines; everything else goes to the log for support.
+# Debug mode (touch /data/adb/xairdrop/debug): all lines on screen, a timestamped log and
+# 90 s of Xiaomi Share logs while you test.
 MODDIR=${0%/*}
 K="$MODDIR/kernel"
-LOG=/sdcard/Download/xairdrop-test-$(date +%Y%m%d-%H%M%S).log
+DEBUG=0; [ -f /data/adb/xairdrop/debug ] && DEBUG=1
+if [ $DEBUG = 1 ]; then LOG=/sdcard/Download/xairdrop-test-$(date +%Y%m%d-%H%M%S).log; else LOG=/sdcard/Download/xairdrop.log; fi
 STOCK_DIR=/vendor/lib/modules
 [ -f "$STOCK_DIR/qca_cld3_peach_v2.ko" ] || STOCK_DIR=/vendor_dlkm/lib/modules
 INI=/vendor/firmware/wlan/WCNSS_qcom_cfg.ini
 
-say() { echo "$*"; echo "$*" >> "$LOG"; }
+# say: log (and screen in debug mode); show: always on screen. Messages in English and Turkish.
+say() { [ $DEBUG = 1 ] && echo "$*"; echo "$*" >> "$LOG"; }
+show() { echo "$*"; echo "$*" >> "$LOG"; }
+# A failure the user can act on: the message, then where the details are.
+die() { show "$1"; show "$2"; show "Log: $LOG"; exit 1; }
 run() { echo "\$ $*" >> "$LOG"; "$@" >> "$LOG" 2>&1; rc=$?; [ $rc = 0 ] || echo "  -> exit $rc" >> "$LOG"; return $rc; }
 # Framework tools: pin the Android binaries (KernelSU's shell prefers BusyBox applets) and
 # capture their output, so system_server never receives a file descriptor it may not use.
@@ -22,7 +30,8 @@ wlan_wait() { n=0; while [ ! -d /sys/class/net/wlan0 ] && [ $n -lt "$1" ]; do sl
 hal_services() { getprop | sed -n 's/^\[init\.svc\.\(vendor\.wifi_hal[^]]*\)\]: \[running\]$/\1/p'; }
 
 : > "$LOG"
-say "== XAirDrop test step 1, v0.27 ($(date))"
+say "== XAirDrop v0.27 ($(date))"
+show "XAirDrop: starting AirDrop... / AirDrop başlatılıyor..."
 say "device=$(getprop ro.product.device) model=$(getprop ro.product.model) build=$(getprop ro.build.version.incremental)"
 say "kernel=$(uname -r)"
 say "== Wi-Fi modules before"
@@ -39,24 +48,22 @@ done
 # Swapping the Wi-Fi driver under a running hotspot can crash the kernel.
 AP=$(ls /sys/class/net | grep -E '^(ap|swlan|softap)|^wlan[1-9]|^ap_br' | tr '\n' ' ')
 if [ -n "$AP" ]; then
-    say "STOP: hotspot is on ($AP). Turn off the hotspot (and the tablet connection), then run the test again."
-    say "Log: $LOG"; exit 1
+    say "hotspot interfaces: $AP"
+    die "Turn off the hotspot, then press the action button again." "Hotspot'u kapatıp Action'a tekrar basın."
 fi
 
 if ! loaded qca_cld3_peach_v2; then
-    say "STOP: stock driver qca_cld3_peach_v2 is not loaded; this phone uses another Wi-Fi driver."
-    say "Log: $LOG"; exit 1
+    say "stock driver qca_cld3_peach_v2 is not loaded"
+    die "This phone is not supported (Xiaomi 15 / 15 Ultra only)." "Bu telefon desteklenmiyor (yalnızca Xiaomi 15 / 15 Ultra)."
 fi
 if loaded wonder && loaded oneplus13_wonder_provider && [ -d /sys/class/net/wlan0 ]; then
     say "Step 1 stack already loaded in this boot; going to step 2."
     . "$MODDIR/step2.sh"
-    STEP2_RC=$?
-    say "Reboot the phone to go back to the stock Wi-Fi driver."
-    say "Log: $LOG"; exit $STEP2_RC
+    exit $?
 fi
 if loaded wonder || loaded oneplus13_wonder_provider; then
-    say "STOP: a half-loaded test stack is present. Reboot the phone, then run the test again."
-    say "Log: $LOG"; exit 1
+    say "half-loaded stack present"
+    die "Reboot the phone, then press the action button again." "Telefonu yeniden başlatıp Action'a tekrar basın."
 fi
 # Without a mount metamodule (stock SukiSU/KernelSU) the module's system/ is never mounted.
 # Then hand the kernel the ini directly: a copy in /dev labeled like vendor firmware, found
@@ -66,14 +73,14 @@ FW_OLD=
 if [ ! -r "$INI" ]; then
     MOD_INI="$MODDIR/system/vendor/firmware/wlan/WCNSS_qcom_cfg.ini"
     if [ ! -r "$MOD_INI" ]; then
-        say "STOP: $MOD_INI is missing. Reinstall the module."
-        say "Log: $LOG"; exit 1
+        say "$MOD_INI is missing"
+        die "Module files are missing: reinstall XAirDrop." "Modül dosyaları eksik: XAirDrop'u yeniden kurun."
     fi
     FW_DIR=/dev/xairdrop/fw
     mkdir -p "$FW_DIR/wlan" && cp "$MOD_INI" "$FW_DIR/wlan/" && chmod -R 0755 /dev/xairdrop && chmod 0644 "$FW_DIR/wlan/WCNSS_qcom_cfg.ini"
     chcon -R u:object_r:vendor_firmware_file:s0 "$FW_DIR"
     FW_OLD=$(cat "$FW_PATH" 2>/dev/null)
-    echo -n "$FW_DIR" > "$FW_PATH" || { say "STOP: could not set $FW_PATH"; say "Log: $LOG"; exit 1; }
+    echo -n "$FW_DIR" > "$FW_PATH" || die "Could not prepare the Wi-Fi driver." "Wi-Fi sürücüsü hazırlanamadı."
     INI="$FW_DIR/wlan/WCNSS_qcom_cfg.ini"
     say "module files are not mounted (no metamodule); ini served from $FW_DIR via firmware_class.path"
 fi
@@ -116,10 +123,11 @@ restore_stock() {
 }
 fail() {
     say "FAILED: $*"
+    show "AirDrop could not start; stock Wi-Fi is being restored. / AirDrop başlatılamadı; stok Wi-Fi geri yükleniyor."
     [ -n "$FW_DIR" ] && echo -n "$FW_OLD" > "$FW_PATH"
     dmesg | grep -iE 'qca_cld|wonder|opairshare|passthru|disagrees|unknown symbol|Failed to probe|WCNSS' | tail -n 80 >> "$LOG"
     restore_stock
-    say "Log: $LOG"; exit 1
+    show "Log: $LOG"; exit 1
 }
 
 MAC_SWAPPED=0
@@ -131,7 +139,7 @@ for h in $HALS; do run stop "$h"; done
 sleep 2
 
 say "== 2. Driver swap"
-run rmmod qca_cld3_peach_v2 || { say "STOP: the stock driver could not be unloaded."; for h in $HALS; do run start "$h"; done; fw svc wifi enable; say "Log: $LOG"; exit 1; }
+run rmmod qca_cld3_peach_v2 || { for h in $HALS; do run start "$h"; done; fw svc wifi enable; die "The Wi-Fi driver is busy; reboot and press the action button right away." "Wi-Fi sürücüsü meşgul; yeniden başlatıp hemen Action'a basın."; }
 run insmod "$K/oneplus13_wonder_provider.ko" || fail "provider did not load"
 run insmod "$K/qca_cld3_peach_v2.ko" \
     passthru_awdl_addba=1 passthru_awdl_native_rx=1 passthru_ht=1 passthru_fwtype=7 passthru_mon_rings=0 passthru_dry_run=0 \
@@ -176,8 +184,8 @@ dmesg | sed -n '/Hard Unloading driver/,$p' | grep -iE 'wonder|passthru|opairsha
 if [ -d /sys/class/net/wlan0 ] && loaded wonder; then
     say "RESULT 1: AirDrop Wi-Fi stack loaded and wlan0 is up."
     . "$MODDIR/step2.sh"
+    exit $?
 else
-    say "RESULT 1: stack incomplete, see the log."
+    say "RESULT 1: stack incomplete"
+    die "AirDrop could not start. Reboot and try again." "AirDrop başlatılamadı. Yeniden başlatıp tekrar deneyin."
 fi
-say "Reboot the phone to go back to the stock Wi-Fi driver."
-say "Log: $LOG"

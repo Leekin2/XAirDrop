@@ -23,13 +23,13 @@ if [ ! -r "$MANIFEST" ]; then
         say "manifest bind-mounted over $MDIR ($(ls "$MDIR" | wc -l) files)"
     else
         say "STOP: could not add $MANIFEST"
-        return 1
+        die "AirDrop service could not start. Reboot and try again." "AirDrop servisi başlatılamadı. Yeniden başlatıp tekrar deneyin."
     fi
 fi
 
 # 1. wonder_enable, as Xiaomi's own wonder.ko provides it
 grep -q '^wonder_sysctl ' /proc/modules || run insmod "$K/wonder_sysctl.ko"
-if [ "$(cat $WE 2>/dev/null)" = 1 ]; then say "wonder_enable=1"; else say "FAILED: $WE is not 1"; dmesg | grep -iE 'wonder_sysctl|disagrees|Unknown symbol' | tail -n 20 >> "$LOG"; return 1; fi
+if [ "$(cat $WE 2>/dev/null)" = 1 ]; then say "wonder_enable=1"; else say "FAILED: $WE is not 1"; dmesg | grep -iE 'wonder_sysctl|disagrees|Unknown symbol' | tail -n 20 >> "$LOG"; die "AirDrop service could not start. Reboot and try again." "AirDrop servisi başlatılamadı. Yeniden başlatıp tekrar deneyin."; fi
 say "label: $(ls -Z $WE 2>&1)"
 
 # 2. Xiaomi's service, kept available by the keeper
@@ -49,7 +49,7 @@ out=$(/system/bin/service check "$SVC" 2>&1); say "$out"
 if ! echo "$out" | grep -q ': found'; then
     say "FAILED: the service did not register"
     cat /data/local/tmp/xairdrop-keeper.log /data/local/tmp/xairdrop-xos.log >> "$LOG" 2>/dev/null
-    return 1
+    die "AirDrop service could not start. Reboot and try again." "AirDrop servisi başlatılamadı. Yeniden başlatıp tekrar deneyin."
 fi
 say "service ready, pid $(pidof DomesticXOsComm)"
 
@@ -90,12 +90,21 @@ elif [ -n "$APPID" ] && [ -n "$MSAPK" ]; then
     chmod 0644 "$XOS/xairdrop-broker.dex"
     CLASSPATH="$BROKER_CP" setsid nohup /system/bin/app_process /system/bin io.github.leekin2.xairdrop.NetworkBroker "$APPID" > "$BLOG" 2>&1 &
     n=0; while [ $n -lt 10 ] && ! broker_ping; do sleep 1; n=$((n+1)); done
-    if broker_ping; then say "network broker ready (MIShare appId $APPID)"; else say "WARNING: network broker did not start"; tail -n 30 "$BLOG" >> "$LOG"; fi
+    if broker_ping; then say "network broker ready (MIShare appId $APPID)"; else say "WARNING: network broker did not start"; tail -n 30 "$BLOG" >> "$LOG"; die "AirDrop service could not start. Reboot and try again." "AirDrop servisi başlatılamadı. Yeniden başlatıp tekrar deneyin."; fi
 else
     say "WARNING: no MIShare appId/APK; network broker not started"
+    die "Xiaomi Share is not installed: install MIShare-5.4.2.apk from the release." "Xiaomi Share kurulu değil: sürümdeki MIShare-5.4.2.apk'yı kurun."
 fi
 
 fw am force-stop $MS
+show "AirDrop is ready until reboot: Share > Transfer to and from Apple devices."
+show "AirDrop yeniden başlatmaya kadar hazır: Paylaş > Transfer to and from Apple devices."
+[ "$MS_OK" = 1 ] || show "Note: install MIShare-5.4.2.apk from the release, reboot and press again. / Sürümdeki MIShare-5.4.2.apk'yı kurup yeniden başlatın ve tekrar basın."
+if [ $DEBUG != 1 ]; then
+    say "== kernel warnings"
+    dmesg | grep -nE 'WARNING:|Call trace|Oops|BUG:' | tail -n 20 >> "$LOG"
+    return 0
+fi
 T=$(date '+%m-%d %H:%M:%S.000')
 say ""
 say ">>> NOW: share a photo (Gallery or Files) and pick 'Transfer to and from Apple devices'."
@@ -127,4 +136,5 @@ dmesg | grep -nE 'WARNING:|Call trace|Oops|BUG:|Modules linked in' | tail -n 20 
 L=$(dmesg | grep -nE 'WARNING:|Oops|BUG:' | tail -n 1 | cut -d: -f1)
 [ -n "$L" ] && dmesg | sed -n "$((L>5 ? L-5 : 1)),$((L+45))p" >> "$LOG"
 say "RESULT 2: AirDrop stays available until reboot. Send this log."
+show "Log: $LOG"
 return 0

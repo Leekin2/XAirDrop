@@ -56,7 +56,8 @@ pressing the action button.
 1. Install `MIShare-5.4.2.apk` from the release.
 2. Install `XAirDrop-vX.zip` in KernelSU / SukiSU and reboot.
 3. **After every reboot**, turn off the hotspot and press the module's **action button** once.
-   It loads the AirDrop radio and writes a log to `Download/xairdrop-test-*.log`.
+   It loads the AirDrop radio in about 20 seconds and says when AirDrop is ready. Details go to
+   `Download/xairdrop.log` (send it when asking for help).
 4. On a global / EU-style ROM, if Xiaomi Share does not show up in the share sheet, run once as
    root: `setprop persist.sys.sharesheet.region 2`
 
@@ -74,6 +75,11 @@ pressing the action button.
 - Wi-Fi Internet pauses during AirDrop.
 - The share-sheet fix only applies to the Xiaomi 15 Ultra OS4.0.0.18 share sheet; on other
   builds share from another app, or use the `persist.sys.sharesheet.region 2` setting.
+
+## Troubleshooting
+For a full test log, run once as root `touch /data/adb/xairdrop/debug`, press the action button
+and keep the Apple screen open: it records 90 seconds of Xiaomi Share logs to
+`Download/xairdrop-test-*.log`. Remove the file to turn it off.
 
 ## Uninstall
 Remove the module in KernelSU and reboot. If an AirDrop session was still open, the Wi-Fi network
@@ -151,6 +157,8 @@ Eski test modülü (`xairdrop_test`) kuruluysa XAirDrop onu kaldırır; Action'd
 1. Sürümdeki `MIShare-5.4.2.apk`'yı kur.
 2. `XAirDrop-vX.zip`'i KernelSU / SukiSU'dan kur ve yeniden başlat.
 3. **Her yeniden başlatmadan sonra** hotspot'u kapatıp modülün **Action** düğmesine bir kez bas.
+   Yaklaşık 20 saniyede AirDrop'u hazırlar ve hazır olduğunu yazar. Ayrıntılar
+   `Download/xairdrop.log` dosyasına gider (destek isterken bunu gönderin).
 4. Global / EU benzeri ROM'da Xiaomi Share paylaşım menüsünde çıkmıyorsa root ile bir kez:
    `setprop persist.sys.sharesheet.region 2`
 
@@ -172,6 +180,11 @@ Eski test modülü (`xairdrop_test`) kuruluysa XAirDrop onu kaldırır; Action'd
 - Telegram: [@emcleek](https://t.me/emcleek)
 - XApp kanalı: [t.me/Xgooogle](https://t.me/Xgooogle)
 - HyperVoltron kanalı: [t.me/HyperVoltron](https://t.me/HyperVoltron)
+
+### Sorun giderme
+Ayrıntılı test logu için root ile bir kez `touch /data/adb/xairdrop/debug` çalıştırın, Action'a basın ve
+Apple ekranını açık tutun: Xiaomi Share'in 90 saniyelik kaydı `Download/xairdrop-test-*.log` dosyasına yazılır.
+Kapatmak için dosyayı silin.
 
 ### Teşekkürler
 - [OPAirDrop](https://github.com/Weverses/OPAirDrop) (Weverses): AWDL Wi-Fi sürücüsü ve `wonder`
