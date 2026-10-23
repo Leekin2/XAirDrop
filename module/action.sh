@@ -17,8 +17,18 @@ INI=/vendor/firmware/wlan/WCNSS_qcom_cfg.ini
 # say: log (and screen in debug mode); show: always on screen. Messages in English and Turkish.
 say() { [ $DEBUG = 1 ] && echo "$*"; echo "$*" >> "$LOG"; }
 show() { echo "$*"; echo "$*" >> "$LOG"; }
+# The module's description in KernelSU shows whether AirDrop is on.
+status() { sed -i "s|^description=.*|description=$1|" "$MODDIR/module.prop" 2>/dev/null; }
+NOT_ACTIVE="❌ AirDrop is off: press the action button. / AirDrop kapalı: Action'a basın."
 # A failure the user can act on: the message, then where the details are.
-die() { show "$1"; show "$2"; show "Log: $LOG"; exit 1; }
+die() { show "$1"; show "$2"; show "Log: $LOG"; status "$NOT_ACTIVE"; exit 1; }
+
+# One run at a time: the boot start and the action button must not swap drivers together.
+if ! mkdir /dev/xairdrop.lock 2>/dev/null; then
+    echo "AirDrop is already starting, please wait. / AirDrop zaten başlatılıyor, lütfen bekleyin."
+    exit 0
+fi
+trap 'rmdir /dev/xairdrop.lock 2>/dev/null' EXIT
 run() { echo "\$ $*" >> "$LOG"; "$@" >> "$LOG" 2>&1; rc=$?; [ $rc = 0 ] || echo "  -> exit $rc" >> "$LOG"; return $rc; }
 # Framework tools: pin the Android binaries (KernelSU's shell prefers BusyBox applets) and
 # capture their output, so system_server never receives a file descriptor it may not use.
@@ -30,7 +40,7 @@ wlan_wait() { n=0; while [ ! -d /sys/class/net/wlan0 ] && [ $n -lt "$1" ]; do sl
 hal_services() { getprop | sed -n 's/^\[init\.svc\.\(vendor\.wifi_hal[^]]*\)\]: \[running\]$/\1/p'; }
 
 : > "$LOG"
-say "== XAirDrop v0.27 ($(date))"
+say "== XAirDrop v0.28 ($(date))"
 show "XAirDrop: starting AirDrop... / AirDrop başlatılıyor..."
 say "device=$(getprop ro.product.device) model=$(getprop ro.product.model) build=$(getprop ro.build.version.incremental)"
 say "kernel=$(uname -r)"
@@ -127,7 +137,7 @@ fail() {
     [ -n "$FW_DIR" ] && echo -n "$FW_OLD" > "$FW_PATH"
     dmesg | grep -iE 'qca_cld|wonder|opairshare|passthru|disagrees|unknown symbol|Failed to probe|WCNSS' | tail -n 80 >> "$LOG"
     restore_stock
-    show "Log: $LOG"; exit 1
+    show "Log: $LOG"; status "$NOT_ACTIVE"; exit 1
 }
 
 MAC_SWAPPED=0

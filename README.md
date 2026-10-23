@@ -13,8 +13,7 @@ By [Leekin2](https://github.com/Leekin2) and [mertcqnkld](https://github.com/mer
 ## How it works
 Xiaomi added AirDrop to Xiaomi Share on the Xiaomi 18 Pro Max ("Transfer to and from Apple
 devices"). The Xiaomi 15 family has the same chip family but not the Wi-Fi driver support
-(AWDL), the service or the app version. XAirDrop brings them together, in RAM only, when you
-press the module's action button:
+(AWDL), the service or the app version. XAirDrop brings them together, in RAM only, after boot:
 
 - **Wi-Fi driver with AWDL**: the OnePlus 13 AirDrop kernel modules from
   [OPAirDrop](https://github.com/Weverses/OPAirDrop) (same SM8750 platform and kernel), adapted
@@ -32,8 +31,9 @@ press the module's action button:
 - **Share sheet** (Xiaomi 15 Ultra OS4.0.0.18): sharing from Gallery opens the Apple screen
   instead of looping back to the share sheet.
 
-Nothing is written to the system partitions, nothing runs at boot except a Wi-Fi recovery check,
-and a reboot puts the stock driver and apps back.
+All of this starts by itself about a minute after boot; the AirDrop radio only runs while the
+Apple share screen is open. Nothing is written to the system partitions, and removing the module
+and rebooting puts the stock driver and apps back.
 
 ## Requirements
 - Xiaomi 15 or Xiaomi 15 Ultra, HyperOS 4, kernel `6.6.118-android15-8`
@@ -49,14 +49,14 @@ Tested:
   work; not yet tested with an iPhone nearby
 - Receiving from an iPhone has not been confirmed yet.
 
-If an earlier test build (`xairdrop_test`) is installed, XAirDrop removes it; reboot before
-pressing the action button.
+If an earlier test build (`xairdrop_test`) is installed, XAirDrop removes it at the next reboot.
 
 ## Install
 1. Install `MIShare-5.4.2.apk` from the release.
 2. Install `XAirDrop-vX.zip` in KernelSU / SukiSU and reboot.
-3. **After every reboot**, turn off the hotspot and press the module's **action button** once.
-   It loads the AirDrop radio in about 20 seconds and says when AirDrop is ready.
+3. That's it: about a minute after boot the module's description in KernelSU shows
+   "✅ AirDrop is on". If it shows ❌ or ⚠️ (for example the hotspot was on), press the module's
+   **action button** to start it by hand.
 4. On a global / EU-style ROM, if Xiaomi Share does not show up in the share sheet, run once as
    root: `setprop persist.sys.sharesheet.region 2`
 
@@ -69,7 +69,10 @@ pressing the action button.
   goes over mobile data in the meantime.
 
 ## Known limits
-- The action button is needed after every reboot (the radio is never loaded at boot).
+- AirDrop is not available during the first minute after boot. To start it only by hand, run
+  once as root `touch /data/adb/xairdrop/no-autostart`.
+- If the phone restarts while AirDrop is starting, the next boot skips the automatic start; press
+  the action button.
 - The phone is visible to iPhones only while the receive page is open, like on the 18 Pro Max.
 - Wi-Fi Internet pauses during AirDrop.
 - The share-sheet fix only applies to the Xiaomi 15 Ultra OS4.0.0.18 share sheet; on other
@@ -123,7 +126,7 @@ Geliştiriciler: [Leekin2](https://github.com/Leekin2) ve [mertcqnkld](https://g
 ### Nasıl çalışır
 Xiaomi, Xiaomi 18 Pro Max'te Xiaomi Share'e AirDrop ekledi ("Transfer to and from Apple
 devices"). Xiaomi 15 serisinde Wi-Fi sürücüsü desteği (AWDL), servis ve uygulama sürümü yok.
-XAirDrop bunları, modülün Action düğmesine bastığında, yalnızca RAM'de bir araya getirir:
+XAirDrop bunları açılıştan sonra, yalnızca RAM'de bir araya getirir:
 
 - **AWDL destekli Wi-Fi sürücüsü:** [OPAirDrop](https://github.com/Weverses/OPAirDrop)'un
   OnePlus 13 modülleri (aynı SM8750 platformu ve çekirdeği), Xiaomi çekirdeğine uyarlanmış hâli,
@@ -138,8 +141,9 @@ XAirDrop bunları, modülün Action düğmesine bastığında, yalnızca RAM'de 
 - **Paylaşım menüsü** (Xiaomi 15 Ultra OS4.0.0.18): Galeri'den paylaşınca Apple ekranı açılır,
   menüye geri dönme döngüsü olmaz.
 
-Sistem bölümlerine hiçbir şey yazılmaz; açılışta yalnızca Wi-Fi kurtarma kontrolü çalışır.
-Yeniden başlatınca stok sürücü ve uygulamalar geri gelir.
+Hepsi açılıştan yaklaşık bir dakika sonra kendiliğinden başlar; AirDrop radyosu yalnızca Apple
+paylaşım ekranı açıkken çalışır. Sistem bölümlerine hiçbir şey yazılmaz; modülü kaldırıp yeniden
+başlatınca stok sürücü ve uygulamalar geri gelir.
 
 ### Gereksinimler
 - Xiaomi 15 veya Xiaomi 15 Ultra, HyperOS 4, çekirdek `6.6.118-android15-8`
@@ -150,13 +154,13 @@ Yeniden başlatınca stok sürücü ve uygulamalar geri gelir.
 
 Test edildi: Xiaomi 15 (iPhone'a gönderim, Wi-Fi bağlıyken de); Xiaomi 15 Ultra (iPhone olmadan:
 radyo, servis, yamalar, Wi-Fi duraklatma). iPhone'dan alma henüz doğrulanmadı.
-Eski test modülü (`xairdrop_test`) kuruluysa XAirDrop onu kaldırır; Action'dan önce yeniden başlatın.
+Eski test modülü (`xairdrop_test`) kuruluysa XAirDrop onu sonraki yeniden başlatmada kaldırır.
 
 ### Kurulum
 1. Sürümdeki `MIShare-5.4.2.apk`'yı kur.
 2. `XAirDrop-vX.zip`'i KernelSU / SukiSU'dan kur ve yeniden başlat.
-3. **Her yeniden başlatmadan sonra** hotspot'u kapatıp modülün **Action** düğmesine bir kez bas.
-   Yaklaşık 20 saniyede AirDrop'u hazırlar ve hazır olduğunu yazar.
+3. Bu kadar: açılıştan yaklaşık bir dakika sonra KernelSU'da modül açıklamasında "✅ AirDrop açık"
+   yazar. ❌ ya da ⚠️ görürsen (örneğin hotspot açıktı) modülün **Action** düğmesine basarak elle başlat.
 4. Global / EU benzeri ROM'da Xiaomi Share paylaşım menüsünde çıkmıyorsa root ile bir kez:
    `setprop persist.sys.sharesheet.region 2`
 
@@ -168,7 +172,9 @@ Eski test modülü (`xairdrop_test`) kuruluysa XAirDrop onu kaldırır; Action'd
 - Apple ekranı açıkken Wi-Fi kopar, ekrandan çıkınca geri gelir; arada internet mobil veriden gider.
 
 ### Bilinen sınırlar
-- Her yeniden başlatmadan sonra Action gerekir.
+- Açılıştan sonraki ilk dakika AirDrop hazır değildir. Yalnızca elle başlatmak için root ile bir kez:
+  `touch /data/adb/xairdrop/no-autostart`
+- Telefon AirDrop başlatılırken yeniden başlarsa, sonraki açılışta otomatik başlatma atlanır; Action'a basın.
 - Telefon iPhone'lara yalnızca alma sayfası açıkken görünür (18 Pro Max'te de böyle).
 - AirDrop sırasında Wi-Fi interneti durur.
 - Paylaşım menüsü düzeltmesi yalnızca Xiaomi 15 Ultra OS4.0.0.18 içindir; diğer sürümlerde başka

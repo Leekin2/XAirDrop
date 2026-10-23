@@ -33,8 +33,6 @@ awk '/^monitor_mode_concurrency=/ { next }
      { print }
      END { if (!done) print "monitor_mode_concurrency=1" }' "$SRC_INI" > "$DST_INI" || abort "! could not write the Wi-Fi ini"
 set_perm "$DST_INI" 0 0 0644
-ui_print "- Wi-Fi ini: $(grep -c '' "$DST_INI") lines, $(grep '^monitor_mode_concurrency=' "$DST_INI")"
-ui_print "- Needs Xiaomi Share (MIShare) 5.4.2 from the Xiaomi 18 Pro Max installed."
-ui_print "- No LSPosed: the action patches Xiaomi Share and the share sheet until reboot."
-ui_print "- Uninstall the XAirDrop LSPosed test app (v0.23) if it is installed."
-ui_print "- Reboot once, then press the action button to run the test."
+ui_print "- Needs Xiaomi Share (MIShare) 5.4.2 from the release."
+ui_print "- Reboot: AirDrop starts by itself about a minute after boot."
+ui_print "  The module description shows when it is on."

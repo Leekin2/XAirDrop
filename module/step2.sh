@@ -97,6 +97,7 @@ else
 fi
 
 fw am force-stop $MS
+status "✅ AirDrop is on. Share > Transfer to and from Apple devices. / AirDrop açık."
 show "AirDrop is ready until reboot: Share > Transfer to and from Apple devices."
 show "AirDrop yeniden başlatmaya kadar hazır: Paylaş > Transfer to and from Apple devices."
 [ "$MS_OK" = 1 ] || show "Note: install MIShare-5.4.2.apk from the release, reboot and press again. / Sürümdeki MIShare-5.4.2.apk'yı kurup yeniden başlatın ve tekrar basın."
