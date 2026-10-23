@@ -56,8 +56,7 @@ pressing the action button.
 1. Install `MIShare-5.4.2.apk` from the release.
 2. Install `XAirDrop-vX.zip` in KernelSU / SukiSU and reboot.
 3. **After every reboot**, turn off the hotspot and press the module's **action button** once.
-   It loads the AirDrop radio in about 20 seconds and says when AirDrop is ready. Details go to
-   `Download/xairdrop.log` (send it when asking for help).
+   It loads the AirDrop radio in about 20 seconds and says when AirDrop is ready.
 4. On a global / EU-style ROM, if Xiaomi Share does not show up in the share sheet, run once as
    root: `setprop persist.sys.sharesheet.region 2`
 
@@ -157,8 +156,7 @@ Eski test modülü (`xairdrop_test`) kuruluysa XAirDrop onu kaldırır; Action'd
 1. Sürümdeki `MIShare-5.4.2.apk`'yı kur.
 2. `XAirDrop-vX.zip`'i KernelSU / SukiSU'dan kur ve yeniden başlat.
 3. **Her yeniden başlatmadan sonra** hotspot'u kapatıp modülün **Action** düğmesine bir kez bas.
-   Yaklaşık 20 saniyede AirDrop'u hazırlar ve hazır olduğunu yazar. Ayrıntılar
-   `Download/xairdrop.log` dosyasına gider (destek isterken bunu gönderin).
+   Yaklaşık 20 saniyede AirDrop'u hazırlar ve hazır olduğunu yazar.
 4. Global / EU benzeri ROM'da Xiaomi Share paylaşım menüsünde çıkmıyorsa root ile bir kez:
    `setprop persist.sys.sharesheet.region 2`
 

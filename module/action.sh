@@ -9,7 +9,7 @@
 MODDIR=${0%/*}
 K="$MODDIR/kernel"
 DEBUG=0; [ -f /data/adb/xairdrop/debug ] && DEBUG=1
-if [ $DEBUG = 1 ]; then LOG=/sdcard/Download/xairdrop-test-$(date +%Y%m%d-%H%M%S).log; else LOG=/sdcard/Download/xairdrop.log; fi
+if [ $DEBUG = 1 ]; then LOG=/sdcard/Download/xairdrop-test-$(date +%Y%m%d-%H%M%S).log; else LOG=/data/local/tmp/xairdrop.log; fi
 STOCK_DIR=/vendor/lib/modules
 [ -f "$STOCK_DIR/qca_cld3_peach_v2.ko" ] || STOCK_DIR=/vendor_dlkm/lib/modules
 INI=/vendor/firmware/wlan/WCNSS_qcom_cfg.ini
