@@ -1,0 +1,44 @@
+XAirDrop 1.2 — Unpatched Mi Share test / code130
+Public test prerelease. IPA DISABLED — DIAGNOSTIC.
+
+DEVICE / ROM
+Xiaomi 15 Ultra (xuanyuan): OS4.0.0.18.XOACNXM.
+Xiaomi 15 (dada): OS4.0.0.61.XOCCNXM.
+Exact kernel: 6.6.118-android15-8-gb9cc6ec16bc8-abogki536571621-4k.
+The installer verifies device/ROM/kernel and the stock WLAN/mac80211 file and
+loaded driver identities. Unsupported identities are rejected before changes.
+The Xiaomi 15 profile has been added; physical testing on that device is pending.
+
+REQUIREMENTS
+KernelSU/SukiSU with preinit support. Original Mi Share 5.4.2 or 5.4.4 installed.
+The ZIP does not include, modify or bind-mount Mi Share. Required network
+permissions are granted through PRODUCT signature XML and checked at runtime.
+The separate MiIntentResolver Gallery patch remains. No LSPosed/Xposed/hooks.
+
+INSTALL
+Back up the phone. Disable old XAirDrop and reboot with the stock driver.
+Install the ZIP through KernelSU/SukiSU and reboot through the normal power menu.
+Do not combine it with other AirDrop/WLAN modules.
+
+START / CLOSE
+Enable Wi-Fi and Bluetooth, then open Mi Share's Apple-device sharing screen.
+You do not need to reinstall or press Action for every session. On the iPhone,
+set AirDrop to Everyone for 10 Minutes. Start with a small photo, then test the
+opposite direction separately. Close the Apple screen normally and check Wi-Fi.
+
+TEST STATUS
+Tested on Xiaomi 15 Ultra with original Mi Share 5.4.4: code129 passed two active
+sessions lasting 62.92/62.60 seconds, normal close, Wi-Fi/IP/ping recovery and
+automatic startup after a normal system reboot. Code130 adds the device profile,
+messages and notes; driver/FW/XOS and session/shutdown code are identical.
+Code130 was not separately installed on a phone. 82 offline checks passed.
+iPhone discovery/sending/receiving on this unpatched variant: NOT TESTED.
+Older patched-version transfer results do not establish support for this variant.
+
+RECOVERY / LOGS
+Disable the module and reboot if problems occur. Do not unload the candidate
+driver live or blindly delete blocked/pending protection records. If boot gets
+stuck, power off and boot while holding Volume Down; disable the module in
+SukiSU safe mode.
+Root terminal: su -c "sh /data/adb/modules/xairdrop/collect-log.sh"
+Send Download/xairdrop-1.2-test-*.log privately with the direction of transfer.

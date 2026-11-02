@@ -1,82 +1,87 @@
-# XAirDrop 1.2 test — Mi Share yamasız (code130)
+# XAirDrop 1.2 test — Unpatched Mi Share (code130)
 
-Xiaomi 15 ve Xiaomi 15 Ultra için Xiaomi Share üzerinden Apple cihazlarıyla
-paylaşım modülü. KernelSU/SukiSU içindir; LSPosed/Xposed kullanılmaz.
-Bu bir **test / ön sürümdür**. Sürücü **IPA KAPALI - TEŞHİS** yapılandırmasındadır.
+Apple-device sharing through Xiaomi Share for selected Xiaomi 15 and Xiaomi 15
+Ultra ROMs. Requires KernelSU/SukiSU; no LSPosed/Xposed.
+This is a **test prerelease** with an **IPA DISABLED — DIAGNOSTIC** driver build.
 
-## Cihaz ve ROM
+## Device and ROM profiles
 
-| Cihaz | ROM | Durum |
+| Device | ROM | Status |
 |---|---|---|
-| Xiaomi 15 Ultra (`xuanyuan`) | `OS4.0.0.18.XOACNXM` | **Test edildi:** oturum, normal kapanış, Wi-Fi dönüşü ve yeniden başlatma sonrası otomatik çalışma geçti. |
-| Xiaomi 15 (`dada`) | `OS4.0.0.61.XOCCNXM` | Güncel cihaz profili eklendi; bu cihazda fiziksel test bekleniyor. |
+| Xiaomi 15 Ultra (`xuanyuan`) | `OS4.0.0.18.XOACNXM` | **Tested:** session operation, normal close, Wi-Fi recovery and automatic startup after a normal reboot passed. |
+| Xiaomi 15 (`dada`) | `OS4.0.0.61.XOCCNXM` | Device profile added; physical testing on this device is pending. |
 
-Tam kernel her iki profil için:
+Exact kernel required for both profiles:
 `6.6.118-android15-8-gb9cc6ec16bc8-abogki536571621-4k`.
-Kurulum ayrıca stok WLAN/mac80211 dosya ve çalışan sürücü kimliklerini denetler.
-Farklı cihaz/ROM/kernel veya farklı stok sürücüde firmware/sürücü değiştirilmeden
-“desteklenmiyor” diyerek durur. Aynı kernel adı tek başına kurulum garantisi değildir.
+The installer also verifies the stock WLAN/mac80211 files and the loaded driver
+identity. An unsupported device, ROM, kernel or stock driver is rejected before
+firmware or driver changes. A matching kernel name alone does not guarantee compatibility.
 
-## Değişiklikler
+## Changes
 
-- Telefonda kurulu **orijinal Mi Share 5.4.2 veya 5.4.4** kullanılır. Mi Share APK'sı
-  ZIP'te yoktur, değiştirilmez veya bind-mount edilmez.
-- Gerekli iki ağ izni PRODUCT signature XML'iyle tanımlanır; gerçek izin kontrolü yapılır.
-- Otomatik açılış, normal kapanış ve yeniden başlatma sonrası çalışma düzeltildi.
-- Galeri paylaşım menüsü için ayrı **MiIntentResolver yaması korunur**.
-- Qualcomm CLO passthru sürücüsü, Wonder 3.6.5/API10 ve FW2 yığını kullanılır.
-- Modül yaklaşık **22 MiB**; önceki yamalı paketten yaklaşık **12,6 MiB** küçük.
+- Uses the **original installed Mi Share 5.4.2 or 5.4.4**. The ZIP does not include,
+  modify or bind-mount the Mi Share APK.
+- Adds the two required network permissions through a PRODUCT signature-permission
+  XML and verifies that the permissions are actually granted.
+- Fixes automatic startup, normal shutdown and startup after a normal system reboot.
+- Retains the separate **MiIntentResolver patch** for the Gallery share sheet.
+- Uses the Qualcomm CLO passthru driver, Wonder 3.6.5/API10 and the FW2 stack.
+- Module size: approximately **22 MiB**, about **12.6 MiB smaller** than the previous
+  package with the patched Mi Share APK.
 
-## Test sonucu
+## Test results
 
-**Xiaomi 15 Ultra'da test edildi:** orijinal Mi Share 5.4.4 ile iki oturum
-62,92 ve 62,60 saniye açık kaldı. Normal kapanış, Wi-Fi/IP dönüşü, ping ve
-normal sistem yeniden başlatması sonrası otomatik çalışma geçti. API10,
-firmware `200c002e` ve self-peer yetkilendirmesi doğrulandı.
+**Tested on Xiaomi 15 Ultra:** with the original Mi Share 5.4.4, two sessions
+remained active for 62.92 and 62.60 seconds. Normal close, Wi-Fi/IP recovery,
+ping and automatic startup after a normal system reboot passed. API10,
+firmware `200c002e` and self-peer authorization were verified.
 
-Bu fiziksel sonuçlar code129'a aittir. Yayımlanan code130 yalnız cihaz profili,
-kurulum mesajı ve notlarını genişletir; sürücü/FW/XOS ve oturum/kapanış kodu
-aynıdır. code130'un ayrıca telefona kurulumu yapılmadı. **82 bilgisayar
-kontrolü geçti.**
+These physical test results are from code129. Published code130 adds the device
+profile, installer messages and notes; its driver, firmware, XOS and session/shutdown
+code are identical. Code130 was not separately installed on a phone.
+**82 offline checks passed.**
 
-**Bu yamasız varyantta iPhone keşif/gönderme/alma henüz test edilmedi.**
-Önceki yamalı sürümün hızlı gönderim sonucu bu varyanta aktarım kanıtı sayılmaz.
-Mi Share 5.4.2 için dosya kimliği kabul edilir; fiziksel test 5.4.4 ile yapıldı.
+**iPhone discovery, sending and receiving have not yet been tested with this
+unpatched variant.** Transfer results from the previous patched version do not
+establish transfer support for this variant. Mi Share 5.4.2 is accepted by its
+known file identity; physical testing used 5.4.4.
 
-## Kurulum ve kullanım
+## Installation and use
 
-1. Orijinal Mi Share 5.4.2 veya 5.4.4 telefonda kurulu olmalı.
-2. Eski XAirDrop'u devre dışı bırakıp stok sürücüyle yeniden başlatın.
-3. `XAirDrop-1.2-MiShare-Yamasiz-test.zip` dosyasını KernelSU/SukiSU'dan kurup
-   normal sistem güç menüsüyle yeniden başlatın. Preinit desteği gerekir.
-4. Wi-Fi ve Bluetooth açıkken Mi Share → Apple cihazları sayfasını açın.
-   iPhone'da AirDrop → Herkes için 10 dakika açık olsun. Önce küçük bir fotoğrafla deneyin.
-5. Apple sayfasını normal kapatın; Wi-Fi bağlantısının geri geldiğini kontrol edin.
+1. Install the original Mi Share 5.4.2 or 5.4.4 if it is not already installed.
+2. Disable the old XAirDrop module and reboot with the stock driver.
+3. Install `XAirDrop-1.2-MiShare-Yamasiz-test.zip` in KernelSU/SukiSU and reboot
+   through the normal system power menu. Preinit support is required.
+4. With Wi-Fi and Bluetooth enabled, open Mi Share's Apple-device sharing screen.
+   On the iPhone, enable AirDrop → Everyone for 10 Minutes. Start with a small photo.
+5. Close the Apple-device screen normally and check that Wi-Fi reconnects.
 
-Her açıp kapatmada modülü yeniden kurmak veya Action'a basmak gerekmez.
-Diğer AirDrop/WLAN modülleriyle birlikte kullanmayın.
+You do not need to reinstall the module or press Action for each session.
+Do not use it alongside other AirDrop/WLAN modules.
 
-## Kurtarma ve log
+## Recovery and logs
 
-Sorunda modülü devre dışı bırakıp yeniden başlatın. Aday sürücüyü canlı sökmeyin;
-koruma kayıtlarını kör silmeyin. Açılış takılırsa telefonu kapatıp ses kısma basılı
-açın; SukiSU güvenli moddan modülü devre dışı bırakın.
+If a problem occurs, disable the module and reboot. Do not unload the candidate
+driver live or blindly delete protection records. If boot gets stuck, power the
+phone off and start it while holding Volume Down; disable the module in SukiSU safe mode.
 
-Root terminalde: `su -c "sh /data/adb/modules/xairdrop/collect-log.sh"`.
-Log: `Download/xairdrop-1.2-test-*.log`. Destek için özel olarak gönderin;
-herkese açık bir issue'ya eklemeden önce kişisel bilgileri kontrol edin.
+In a root terminal:
+`su -c "sh /data/adb/modules/xairdrop/collect-log.sh"`
 
-## Geliştirenler ve destek
+Log file: `Download/xairdrop-1.2-test-*.log`. Send logs privately for support;
+check for personal information before attaching them to a public issue.
+
+## Authors and support
 
 [Leekin2](https://github.com/Leekin2) · [mertcqnkld](https://github.com/mertcqnkld)
 
 Telegram: [@emcleek](https://t.me/emcleek) · [XApps for HyperOS](https://t.me/Xgooogle)
 · [HyperVoltron](https://t.me/HyperVoltron).
 
-Kaynak/katkılar: Qualcomm CLO WLAN.LA.1.0.r1-09900-pakala.0, Google Wonder 3.6.5,
-[Weverses/OPAirDrop](https://github.com/Weverses/OPAirDrop), sağlanan MiAirDrop
-firmware/denetleyici referansı ve Xiaomi servis/uygulama ikilileri.
-Bu yayında modül ZIP’i ve kullanım belgeleri sunulur. Yerel geliştirme ağacı ve
-QCA/WLAN kaynak arşivi bu yayına eklenmemiştir.
+Credits: Qualcomm CLO WLAN.LA.1.0.r1-09900-pakala.0, Google Wonder 3.6.5,
+[Weverses/OPAirDrop](https://github.com/Weverses/OPAirDrop), the supplied MiAirDrop
+firmware/controller reference, and Xiaomi's service/application binaries.
+This release includes the module ZIP and usage documentation. The local development
+tree and QCA/WLAN source archive are not included.
 
 SHA256: `b2ba59f785fc0b203a3c888c70a7dc4de9bf764def82535a828c260ffb0a7c98`
