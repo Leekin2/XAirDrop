@@ -1,48 +1,28 @@
 # XAirDrop
 
-Apple-device sharing through Xiaomi Share for selected Xiaomi 15 and Xiaomi 15 Ultra ROMs.
-By [Leekin2](https://github.com/Leekin2) and [mertcqnkld](https://github.com/mertcqnkld).
-A KernelSU/SukiSU module. No LSPosed/Xposed.
+Seçili Xiaomi 15 / 15 Ultra sistemlerinde Xiaomi Share üzerinden Apple aygıtlarıyla paylaşım için root modülü. Geliştirenler: [Leekin2](https://github.com/Leekin2) ve [mertcqnkld](https://github.com/mertcqnkld). LSPosed/Xposed gerekmez.
 
-**[Download: XAirDrop 1.2 test — Unpatched Mi Share](https://github.com/Leekin2/XAirDrop/releases/tag/v1.2-test)**
+**[İndir: XAirDrop 1.2.1 test — code155](https://github.com/Leekin2/XAirDrop/releases/tag/v1.2.1-test)**
 
-| Device | ROM | Status |
-|---|---|---|
-| Xiaomi 15 Ultra (`xuanyuan`) | `OS4.0.0.18.XOACNXM` | **Tested:** session operation, normal close, Wi-Fi recovery and automatic startup after a normal reboot. |
-| Xiaomi 15 (`dada`) | `OS4.0.0.61.XOCCNXM` | Device profile added; physical testing pending. |
+Yeni doğrulanan profil: **Xiaomi 15 Ultra, OS4.0.3.0.XOACNXM**, kernel `6.6.118-android15-8-gf72a02f47f4b-abogki551678766-4k`. Stok WLAN/MAC/bağımlılık dosyalarının tam kimlikleri de kontrol edilir. Eski kernel/profiller korunur; bu yayımda yeniden cihaz testinden geçirilmedi.
 
-Exact kernel: `6.6.118-android15-8-gb9cc6ec16bc8-abogki536571621-4k`.
-The installer also checks the stock driver identity and stops before changing
-firmware/drivers if the identity is unsupported.
+Mi Share 5.5.0 orijinal APK desteği, preinit gerektirmeyen başlangıç, alım oturumu ve temiz kapanış iyileştirmeleri, yaklaşık 8 MiB kayıpsız paket. 5.4.4 için sürüme özel Ask düzeltmesi bulunur. OS4.0.3.0'ın doğrulanan stok Galeri bileşeni değiştirilmez.
 
-**Test prerelease. iPhone discovery, sending and receiving have not yet been tested
-with this unpatched variant.** See the release notes for the exact test scope.
+**Test sürümü; IPA kapalı teşhis yapılandırması.** API10, alım oturumu, Wi-Fi'ye dönüş ve yeniden başlatma testleri korunmuş code154 çalışma dosyalarıyla geçti. Code155 ZIP'i yerelde doğrulandı; telefona ayrıca kurulmadı. **Bu ROM'da iPhone keşfi, gerçek dosya aktarımı ve hız henüz doğrulanmadı.**
 
-## Installation
+## Kullanım
 
-1. Have the original **Mi Share 5.4.2 or 5.4.4** installed. The ZIP does not include or patch Mi Share.
-2. Disable the old XAirDrop module and reboot with the stock driver.
-3. Install the latest ZIP in KernelSU/SukiSU and reboot through the normal system power menu.
-4. With Wi-Fi/Bluetooth enabled, open Mi Share's Apple-device sharing screen.
-   Close it normally to restore the Wi-Fi connection.
+1. Uygun orijinal Mi Share kurulu olmalı; APK pakete dahil değildir.
+2. ZIP'i KernelSU/SukiSU üzerinden yükleyip yeniden başlatın. Çözülmemiş hata korumaları inceleme gerektirir; otomatik silinmez.
+3. Wi-Fi ve Bluetooth'u açıp Mi Share'in Apple alım ekranını açık tutun. Gelen isteği telefonda kabul edin.
+4. Ekranı normal kapatınca Wi-Fi bağlantısının geri döndüğünü kontrol edin.
 
-Preinit support is required. You do not need to reinstall or press Action for each
-session. The separate MiIntentResolver Gallery patch is retained.
-Driver configuration: **IPA DISABLED — DIAGNOSTIC**.
+[Değişiklikler, tam uyumluluk ve test sınırları](releases/1.2.1-test/README.md) · [Kısa kullanım](releases/1.2.1-test/KULLANIM-TR.txt) · [Önceki v1.2-test](https://github.com/Leekin2/XAirDrop/releases/tag/v1.2-test)
 
-[Installation, test results, recovery and logs](releases/1.2-test/README.md) ·
-[Quick usage guide](releases/1.2-test/USAGE-EN.txt) ·
-[Previous 1.0 beta](https://github.com/Leekin2/XAirDrop/releases/tag/v1.0)
+Sorun halinde modülü devre dışı bırakıp yeniden başlatın. Aday sürücüyü canlı sökmeyin. Günlük: `su -c "sh /data/adb/modules/xairdrop/collect-log.sh"`.
 
-## Support
+## Destek ve katkılar
 
-[@emcleek](https://t.me/emcleek) · [XApps for HyperOS](https://t.me/Xgooogle)
-· [HyperVoltron](https://t.me/HyperVoltron).
+[@emcleek](https://t.me/emcleek) · [XApps for HyperOS](https://t.me/Xgooogle) · [HyperVoltron](https://t.me/HyperVoltron).
 
-## Credits
-
-Qualcomm CLO WLAN.LA.1.0.r1-09900-pakala.0, Google Wonder 3.6.5,
-[Weverses/OPAirDrop](https://github.com/Weverses/OPAirDrop), the supplied MiAirDrop
-firmware/controller reference, and Xiaomi's service/application binaries. LICENSE
-and per-file upstream notices apply. Historical project source remains in this
-repository. The current local development tree is not included in this release.
+Qualcomm CLO WLAN, Google Wonder 3.6.5, [Weverses/OPAirDrop](https://github.com/Weverses/OPAirDrop), MiAirDrop referansı ve Xiaomi bileşenleri. LICENSE ve dosyalardaki upstream bildirimleri geçerlidir. Özel geliştirme ağacı ve cihaz günlükleri yayıma dahil değildir.

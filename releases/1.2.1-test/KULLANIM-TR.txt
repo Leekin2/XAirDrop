@@ -1,0 +1,7 @@
+XAirDrop 1.2.1-test / code155
+KernelSU/SukiSU üzerinden ZIP'i yükleyip yeniden başlatın. Wi-Fi ve Bluetooth açık olmalı. Mi Share > Apple aygıtlarından alma ekranını açık tutun. Gelen dosyayı kendiniz kabul edin. Ekranı normal kapatınca Wi-Fi bağlantısını kontrol edin.
+Doğrulanan yeni profil: Xiaomi 15 Ultra, OS4.0.3.0.XOACNXM; tam kernel ve stok WLAN kimlikleri zorunlu.
+Mi Share 5.5.0 orijinal kalır; APK pakette yoktur. 5.4.4 için eski sürüme özel Ask düzeltmesi bulunur.
+Test sürümü / IPA kapalı teşhis. iPhone keşfi, iki yönlü gerçek aktarım ve hız bu ROM'da henüz doğrulanmadı. Code155 ZIP'i telefona ayrıca kurulmadı; korunmuş code154 çalışma dosyaları cihazda test edildi. Paket yerelde doğrulandı.
+Çözülmemiş hata korumaları otomatik silinmez. Sorunda modülü devre dışı bırakıp yeniden başlatın.
+Tam değişiklikler: https://github.com/Leekin2/XAirDrop/releases/tag/v1.2.1-test
