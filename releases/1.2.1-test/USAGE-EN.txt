@@ -1,0 +1,16 @@
+XAirDrop 1.2.1 test (code155)
+
+Install through KernelSU or SukiSU and reboot. Enable Wi-Fi and Bluetooth.
+Open Mi Share's Apple-device receive screen and accept the incoming request.
+Close the screen normally and verify that Wi-Fi reconnects.
+
+Verified new profile: Xiaomi 15 Ultra on OS4.0.3.0.XOACNXM, with exact kernel
+and stock WLAN driver identities. Use the original Mi Share APK.
+
+The repaired code154 runtime passed startup and receive session tests.
+The code155 ZIP was verified locally. iPhone discovery, transfers in both
+directions, and transfer speed remain unverified on this ROM.
+
+If you encounter a problem, disable the module and reboot.
+
+Release notes: https://github.com/Leekin2/XAirDrop/releases/tag/v1.2.1-test

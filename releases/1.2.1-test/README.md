@@ -1,43 +1,31 @@
-# XAirDrop 1.2.1 test — code155
+# XAirDrop 1.2.1 test (code155)
 
-Önceki GitHub sürümü: **v1.2-test / code130**. Bu sürüm, daha sonra geliştirilen code154 çalışma dosyalarını ve doğrulanan HyperOS 4.0.3 profilini tek test paketinde toplar.
+## Changes since v1.2-test (code130)
 
-## Code130'a göre değişiklikler
+- Added a Xiaomi 15 Ultra profile for HyperOS OS4.0.3.0.XOACNXM. The module checks the exact kernel release (6.6.118-android15-8-gf72a02f47f4b-abogki551678766-4k) and stock WLAN driver and dependency identities.
+- Added support for stock Mi Share 5.5.0, including APK identity and network permission checks. The ZIP does not include the Mi Share APK. Earlier 5.4.2 and 5.4.4 profiles remain available, with a version-specific Ask fix for 5.4.4.
+- Moved firmware selection to post-fs-data, removing the preinit requirement. Improved automatic startup, clean shutdown, and recovery guards.
+- The module's Action button opens the stock Apple receive screen when the service is active. Failed peer setup is rolled back, and shutdown prevents new work from being queued.
+- The stock Gallery sharing component already handles the AirDrop target on the verified OS4.0.3.0 build, so the older Gallery patch is skipped on that build.
+- Reduced the download from about 22 MiB to 8 MiB using lossless compression.
 
-- **Xiaomi 15 Ultra / OS4.0.3.0.XOACNXM profili:** `6.6.118-android15-8-gf72a02f47f4b-abogki551678766-4k` kerneli ve bu ROM'un stok QCA/MAC/bağımlılık dosyaları tam kimlikleriyle denetlenir. Kernel adı tek başına yeterli değildir.
-- **Mi Share 5.5.0 desteği:** doğrulanan orijinal APK ve gerekli iki ağ izni kontrol edilir. 5.5.0 APK'sı değiştirilmez ve pakete eklenmez. Önceki 5.4.2/5.4.4 profilleri korunur; 5.4.4 için sürüme özel Ask düzeltmesi bulunur.
-- **Başlangıç ve kapanış:** firmware seçimi `post-fs-data` aşamasına taşındı; preinit bağımlılığı kaldırıldı. Otomatik başlangıç, temiz kapanış, yarım kalan oturum korumaları ve sınırlı yeniden deneme akışı geliştirildi.
-- **Alım oturumu:** Action, çalışan sistemde yeni sürücü denemesi başlatmak yerine stok Apple alım ekranını açar. Eş kaydı başarısızlığında geri alma ve kapanıştan sonra yeni iş kabul etmeme düzeltmeleri içerir.
-- **Galeri:** eski ROM'larda sürüme göre doğrulanan düzeltme korunur. OS4.0.3.0'ın tam kimliği doğrulanan orijinal paylaşım bileşeni AirDrop hedefini zaten ele aldığı için eski Galeri yaması uygulanmaz.
-- **Daha küçük paket:** XZ ile kayıpsız açılan yaklaşık **8,0 MiB** ZIP; eski yayımdaki yaklaşık 22 MiB pakete göre küçüldü. Kurulumdan sonra dosyalar normal biçimde kullanılır.
+## Verification
 
-## Doğrulananlar ve sınırlar
+The repaired code154 runtime passed API10 startup, three receive sessions, Wi-Fi reconnection, and automatic startup after a clean reboot on Xiaomi 15 Ultra with OS4.0.3.0. The last session stayed active for 35 seconds of monitoring with no recorded firmware crash. All 1,006 symbol imports matched, along with 541 field offsets across 16 structures.
 
-14 Kasım 2026 tarihinde Xiaomi 15 Ultra / OS4.0.3.0 üzerinde, bu pakette korunan onarılmış **code154 çalışma dosyalarıyla**:
+The published code155 ZIP passed local archive, checksum, and shell syntax checks. It ships the same kernel modules, firmware, and XOS files as the tested runtime. Code155 was not separately installed on the phone.
 
-- Beş modülün toplam **1.006 sembol bağımlılığı** için eşleşme kontrolü; 16 yapıda **541 ortak alanın** yerleşim kontrolü geçti.
-- Sürücü/Wonder **API10**, üç alım oturumunun açılması ve temiz kapanması, Wi-Fi'nin IP alarak geri dönmesi geçti.
-- Temiz yeniden başlatmadan sonra otomatik başlangıç geçti. Son oturum 35 saniyelik örnekleme boyunca RUNNING kaldı; firmware çökme kaydı görülmedi.
+**iPhone discovery, transfers in both directions, and transfer speed on this ROM remain unverified.** Earlier ROM profiles were not retested for this release. IPA remains disabled in this diagnostic build.
 
-**Code155 ZIP'i ayrıca telefona kurulmadı.** Yerelde ZIP/XZ/tar açılma, tüm dış/iç SHA256 değerleri, dosya listesi, sürüm bilgisi ve shell sözdizimi doğrulandı. Kernel modülleri, firmware ve XOS dosyaları test edilen code154 ile birebir aynıdır. Code155 ayrıca sürüm/paket notlarını ve doğrulanan stok Galeri bileşeni için gereksiz yamayı atlama kontrolünü içerir.
+## Installation and use
 
-**Bu ROM'da iPhone keşfi, iki yönde gerçek dosya aktarımı ve hız henüz doğrulanmadı.** Eski ROM profilleri korunur; bu yayımda yeniden cihaz testinden geçirilmedi. Diğer cihazlar veya aynı adlı farklı sürücü paketleri desteklenmiş sayılmaz. Sürücü hâlâ **IPA KAPALI / TEŞHİS** yapılandırmasındadır.
+1. Keep a supported original Mi Share version installed. Start from a stock-driver boot for a first install or when recovering an unhealthy installation.
+2. Install the ZIP in KernelSU or SukiSU and reboot normally.
+3. Enable Wi-Fi and Bluetooth, then open Mi Share's Apple-device receive screen. Accept incoming requests on the Xiaomi device.
+4. Close the screen normally and check that Wi-Fi reconnects.
 
-## Kurulum ve kullanım
+Unresolved driver and shutdown guards are preserved. If you encounter a problem, disable the module and reboot. Collect logs with: su -c "sh /data/adb/modules/xairdrop/collect-log.sh"
 
-1. Uygun orijinal Mi Share sürümü kurulu olmalı. İlk kurulumda veya sağlıksız eski kurulumda stok sürücüyle açılış gerekir.
-2. ZIP'i KernelSU/SukiSU modül yöneticisinden yükleyip normal şekilde yeniden başlatın. Sağlıklı etkin kurulumda güncelleme bir sonraki açılış için hazırlanabilir. Diğer root çözümleri için yardımcı yollar bulunur; bu yayımda cihaz testi yapılmadı.
-3. Wi-Fi ve Bluetooth'u açın. Mi Share'in Apple aygıtlarından alma ekranını açık tutun. İstek gelirse dosyayı telefonda kabul edin.
-4. Ekranı normal kapattığınızda Wi-Fi bağlantısının geri geldiğini kontrol edin.
+ZIP SHA256: 6534ab6c104c3e4afad254f5dc29ad972b476059a396c5634afdeeabb3cb2be3
 
-Çözülmemiş sürücü/kapanış korumaları otomatik silinmez. Bugün cihazdaki eski, incelenmiş kapanış kaydı ayrıca doğrulanarak arşivlendi; bu ZIP aynı işlemi tüm kullanıcılara otomatik uygulamaz. Sorun halinde modülü devre dışı bırakıp yeniden başlatın; aday sürücüyü canlı sökmeyin. Günlük toplama: `su -c "sh /data/adb/modules/xairdrop/collect-log.sh"`.
-
-## Dosyalar
-
-- `XAirDrop-1.2.1-test.zip` — kurulabilir modül.
-- `XAirDrop-1.2.1-test.zip.sha256` — sağlama toplamı.
-- `KULLANIM-TR.txt` — kısa kullanım ve test sınırları.
-
-SHA256: `6534ab6c104c3e4afad254f5dc29ad972b476059a396c5634afdeeabb3cb2be3`
-
-Geliştirenler: [Leekin2](https://github.com/Leekin2) ve [mertcqnkld](https://github.com/mertcqnkld). Qualcomm CLO WLAN, Google Wonder 3.6.5, [Weverses/OPAirDrop](https://github.com/Weverses/OPAirDrop), MiAirDrop referansı ve Xiaomi bileşenlerine teşekkürler. Özel geliştirme deposu veya cihaz günlükleri bu yayımda paylaşılmadı.
+By [Leekin2](https://github.com/Leekin2) and [mertcqnkld](https://github.com/mertcqnkld). Credits include Qualcomm CLO WLAN, Google Wonder 3.6.5, [Weverses/OPAirDrop](https://github.com/Weverses/OPAirDrop), the MiAirDrop reference, and Xiaomi components.

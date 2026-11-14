@@ -1,28 +1,26 @@
 # XAirDrop
 
-Seçili Xiaomi 15 / 15 Ultra sistemlerinde Xiaomi Share üzerinden Apple aygıtlarıyla paylaşım için root modülü. Geliştirenler: [Leekin2](https://github.com/Leekin2) ve [mertcqnkld](https://github.com/mertcqnkld). LSPosed/Xposed gerekmez.
+Apple-device sharing through Xiaomi Share on selected Xiaomi 15 and Xiaomi 15 Ultra ROMs. A KernelSU/SukiSU module by [Leekin2](https://github.com/Leekin2) and [mertcqnkld](https://github.com/mertcqnkld). No LSPosed or Xposed required.
 
-**[İndir: XAirDrop 1.2.1 test — code155](https://github.com/Leekin2/XAirDrop/releases/tag/v1.2.1-test)**
+**[Download XAirDrop 1.2.1 test (code155)](https://github.com/Leekin2/XAirDrop/releases/tag/v1.2.1-test)**
 
-Yeni doğrulanan profil: **Xiaomi 15 Ultra, OS4.0.3.0.XOACNXM**, kernel `6.6.118-android15-8-gf72a02f47f4b-abogki551678766-4k`. Stok WLAN/MAC/bağımlılık dosyalarının tam kimlikleri de kontrol edilir. Eski kernel/profiller korunur; bu yayımda yeniden cihaz testinden geçirilmedi.
+The new verified profile is **Xiaomi 15 Ultra on OS4.0.3.0.XOACNXM**, with kernel 6.6.118-android15-8-gf72a02f47f4b-abogki551678766-4k. The module checks exact stock WLAN driver and dependency identities.
 
-Mi Share 5.5.0 orijinal APK desteği, preinit gerektirmeyen başlangıç, alım oturumu ve temiz kapanış iyileştirmeleri, yaklaşık 8 MiB kayıpsız paket. 5.4.4 için sürüme özel Ask düzeltmesi bulunur. OS4.0.3.0'ın doğrulanan stok Galeri bileşeni değiştirilmez.
+This release adds stock Mi Share 5.5.0 support, startup without preinit, and improvements to receive sessions and shutdown. The download is about 8 MiB.
 
-**Test sürümü; IPA kapalı teşhis yapılandırması.** API10, alım oturumu, Wi-Fi'ye dönüş ve yeniden başlatma testleri korunmuş code154 çalışma dosyalarıyla geçti. Code155 ZIP'i yerelde doğrulandı; telefona ayrıca kurulmadı. **Bu ROM'da iPhone keşfi, gerçek dosya aktarımı ve hız henüz doğrulanmadı.**
+**Test release with IPA disabled.** The repaired code154 runtime passed startup, receive session, Wi-Fi recovery, and reboot tests. The code155 ZIP passed local checks. iPhone discovery and bidirectional transfer remain unverified on this ROM.
 
-## Kullanım
+## Usage
 
-1. Uygun orijinal Mi Share kurulu olmalı; APK pakete dahil değildir.
-2. ZIP'i KernelSU/SukiSU üzerinden yükleyip yeniden başlatın. Çözülmemiş hata korumaları inceleme gerektirir; otomatik silinmez.
-3. Wi-Fi ve Bluetooth'u açıp Mi Share'in Apple alım ekranını açık tutun. Gelen isteği telefonda kabul edin.
-4. Ekranı normal kapatınca Wi-Fi bağlantısının geri döndüğünü kontrol edin.
+1. Keep a supported original Mi Share version installed.
+2. Install the ZIP through KernelSU or SukiSU and reboot normally.
+3. Enable Wi-Fi and Bluetooth, then open Mi Share's Apple-device receive screen.
+4. Close the screen normally and verify that Wi-Fi reconnects.
 
-[Değişiklikler, tam uyumluluk ve test sınırları](releases/1.2.1-test/README.md) · [Kısa kullanım](releases/1.2.1-test/KULLANIM-TR.txt) · [Önceki v1.2-test](https://github.com/Leekin2/XAirDrop/releases/tag/v1.2-test)
+[Release notes and compatibility](releases/1.2.1-test/README.md) · [Quick guide](releases/1.2.1-test/USAGE-EN.txt) · [Previous v1.2-test release](https://github.com/Leekin2/XAirDrop/releases/tag/v1.2-test)
 
-Sorun halinde modülü devre dışı bırakıp yeniden başlatın. Aday sürücüyü canlı sökmeyin. Günlük: `su -c "sh /data/adb/modules/xairdrop/collect-log.sh"`.
+## Support and credits
 
-## Destek ve katkılar
+[@emcleek](https://t.me/emcleek) · [XApps for HyperOS](https://t.me/Xgooogle) · [HyperVoltron](https://t.me/HyperVoltron)
 
-[@emcleek](https://t.me/emcleek) · [XApps for HyperOS](https://t.me/Xgooogle) · [HyperVoltron](https://t.me/HyperVoltron).
-
-Qualcomm CLO WLAN, Google Wonder 3.6.5, [Weverses/OPAirDrop](https://github.com/Weverses/OPAirDrop), MiAirDrop referansı ve Xiaomi bileşenleri. LICENSE ve dosyalardaki upstream bildirimleri geçerlidir. Özel geliştirme ağacı ve cihaz günlükleri yayıma dahil değildir.
+Credits include Qualcomm CLO WLAN, Google Wonder 3.6.5, [Weverses/OPAirDrop](https://github.com/Weverses/OPAirDrop), the MiAirDrop reference, and Xiaomi components.
